@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:application.properties</value>
+                <value>classpath:local.properties</value>
+            </list>
+        </property>
+
+    </bean>
+
+    <!-- Ehcache library setup -->
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation='ehcache.xml'
+          p:shared="true" />
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cacheManager-ref="ehcache" />
+
+    <cache:annotation-driven />
+    <!-- Scans within the base package of the application for @Components to configure as beans -->
+    <context:component-scan base-package="com.byteworksinc.dao.impl"/>
+    <context:component-scan base-package="com.byteworksinc.service.impl"/>
+    <context:component-scan base-package="com.byteworksinc.test.impl"/>
+
+    <bean id="mysqlDataSource" class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource"
+          p:url = "${connection.url}"
+          p:user = "${connection.user}"
+          p:password = "${connection.password}"
+            />
+
+    <!-- Commons-DBCP -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.datasources.SharedPoolDataSource" lazy-init="false" destroy-method="close"
+          p:connectionPoolDataSource-ref = "mysqlDataSource" />
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="nonCacheCountryDao" class="com.byteworksinc.test.impl.NonCacheCountryDaoImpl" p:dataSource-ref="dataSource" />
+    <bean id="countryDao" class="com.byteworksinc.dao.impl.CountryDaoImpl" p:dataSource-ref="dataSource" />
+
+</beans>
