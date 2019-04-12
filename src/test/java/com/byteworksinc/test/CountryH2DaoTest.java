@@ -1,19 +1,20 @@
 package com.byteworksinc.test;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+
 import com.byteworksinc.dao.CountryDao;
 import com.byteworksinc.model.Country;
+import java.util.List;
+import javax.annotation.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.util.List;
-
-import static junit.framework.Assert.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,12 +24,11 @@ import static junit.framework.Assert.*;
  *
  */
 @Transactional
-@TransactionConfiguration(transactionManager = "transactionManager")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-h2-test.xml" })
 public class CountryH2DaoTest implements DaoTest {
-    public static final String TEST_CODE = "XX";
-    public static final String TEST_NAME = "TEST";
+    private static final String TEST_CODE = "XX";
+    private static final String TEST_NAME = "TEST";
 	@Resource
     private CountryDao countryDao;
 
@@ -100,7 +100,7 @@ public class CountryH2DaoTest implements DaoTest {
         countryDao.save(country);
         final List<Country> results = countryDao.listAll();
         assertNotNull(results);
-        assertTrue(!results.isEmpty());
+        assertFalse(results.isEmpty());
      }
 
     /**

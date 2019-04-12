@@ -1,9 +1,8 @@
 package com.byteworksinc.dao.mapper;
 
-import org.apache.log4j.Logger;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.apache.log4j.Logger;
 
 /**
  * Created by smitchell on 12/29/13.

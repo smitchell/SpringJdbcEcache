@@ -1,25 +1,22 @@
 package com.byteworksinc.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.byteworksinc.dao.CountryDao;
 import com.byteworksinc.model.Country;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by smitchell on 2/16/14.
  */
 @Transactional
-@TransactionConfiguration(transactionManager = "transactionManager")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-h2-test.xml" })
 public class EcacheH2TimingTest extends AbstractEcacheTimingTest {

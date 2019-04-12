@@ -1,9 +1,11 @@
 package com.byteworksinc.dao.impl;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Repository;
-
-import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
